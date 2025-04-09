@@ -40,21 +40,21 @@ def normalize_data(filename):
 
     Y = df["days"].values
 
-    print("Q2:")
+    print("Normalized:")
     print(X_normalized)
 
     return X_normalized, Y, m, M
 
 
 def closed_form_solution(X_normalized, Y):
-    # Compute the closed-form solution (w, b) | used gpt for this as i was unfamialr.
+    # Compute the closed-form solution (w, b) | used gpt for this
     #prompt: "help me w this [mehtod name]. gave code bleow
     weights = np.linalg.inv(X_normalized.T @ X_normalized) @ X_normalized.T @ Y
 
     w, b = weights[0], weights[1]
 
     # Print the result
-    print("Q3:")
+    print("Optimal weight:")
     print(weights)
 
     return weights
@@ -65,7 +65,7 @@ def gradient_descent(X_normalized, Y, learning_rate, iterations):
     weights = np.zeros(2)  # Initialize w and b to 0
     loss_history = []
 
-    print("Q4a:")
+    print("Weight and bias for every ten iterations:")
     for t in range(iterations):
         # Print weights before the first update
         # gpt fixed an error here. was printing incorrectly so helped w formatting.
@@ -73,7 +73,7 @@ def gradient_descent(X_normalized, Y, learning_rate, iterations):
             print(weights)
 
         y_pred = X_normalized @ weights  # Compute predictions
-        gradient = (1 / n) * X_normalized.T @ (y_pred - Y) #Compute gradient used gpt again, same as clsoed form method
+        gradient = (1 / n) * X_normalized.T @ (y_pred - Y) #Compute gradient, same as clsoed form method
         weights -= learning_rate * gradient  # Update weights
 
         # Compute MSE loss
@@ -99,7 +99,7 @@ def predict_ice_days(weights, m, M):
 
     y_hat = weights[0] * x_normalized + weights[1]  # Prediction
     y_hat_rounded = round(y_hat, 13)
-    print("Q5: " + str(y_hat_rounded)) #i am rounding to match output
+    print("prediction for the number of ice days for 2023-24: " + str(y_hat_rounded)) #rounding
 
 
 
@@ -112,11 +112,11 @@ def interpret_weight(w):
     else:
         symbol = "="
 
-    print("Q6a: " + symbol)
+    print("sign: " + symbol)
 
 
 def interpret_model(w):
-    print("Q6b: If w > 0, frozen days increase over time. If w < 0, frozen days decrease, possibly due to climate change. If w = 0, frozen days remain constant.")
+    print("If w > 0, frozen days increase over time. If w < 0, frozen days decrease, possibly due to climate change. If w = 0, frozen days remain constant.")
 
 
 def predict_no_freeze_year(w, b, m, M):
@@ -128,11 +128,11 @@ def predict_no_freeze_year(w, b, m, M):
     # Compute x_star using the formula
     x_star = m + (-b / w) * (M - m)
 
-    print("Q7a: " + str(x_star))
-    print("Q7b: The prediction assumes a linear trend, but climate change effects may not be linear due to external factors.")
+    print("model’s prediction for the year Lake Mendota will no longer freeze: " + str(x_star))
+    # print("The prediction assumes a linear trend, but climate change effects may not be linear due to external factors.")
 
 def main():
-    # Read CLA, will need q4 onwards
+    # Read CLA
     filename = sys.argv[1]
     learning_rate = float(sys.argv[2])
     iterations = int(sys.argv[3])
@@ -141,13 +141,13 @@ def main():
     X_normalized, Y, m, M = normalize_data(filename)
     closed_form_weights = closed_form_solution(X_normalized, Y)
 
-    w, b = closed_form_weights[0], closed_form_weights[1]  # For interpreting w (q6)
+    w, b = closed_form_weights[0], closed_form_weights[1]  # For interpreting
 
-    gd_weights = gradient_descent(X_normalized, Y, learning_rate, iterations) #ignore usage, need to do for q4 onwards
+    gd_weights = gradient_descent(X_normalized, Y, learning_rate, iterations) #ignore usage
 
-    print("Q4b:", learning_rate)
-    print("Q4c:", iterations)
-    print("Q4d: Started with a small learning rate to ensure stability and avoid overshooting the optimal weights.")
+    print("learning rate: ", learning_rate)
+    print("number of iterations: ", iterations)
+    
 
     predict_ice_days(closed_form_weights, m, M)
 
