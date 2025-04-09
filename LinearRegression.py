@@ -68,7 +68,6 @@ def gradient_descent(X_normalized, Y, learning_rate, iterations):
     print("Weight and bias for every ten iterations:")
     for t in range(iterations):
         # Print weights before the first update
-        # gpt fixed an error here. was printing incorrectly so helped w formatting.
         if t % 10 == 0:
             print(weights)
 
