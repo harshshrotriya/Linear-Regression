@@ -114,10 +114,6 @@ def interpret_weight(w):
     print("sign: " + symbol)
 
 
-def interpret_model(w):
-    print("If w > 0, frozen days increase over time. If w < 0, frozen days decrease, possibly due to climate change. If w = 0, frozen days remain constant.")
-
-
 def predict_no_freeze_year(w, b, m, M):
     # Div by 0 undefined - check:
     if w == 0:
@@ -150,8 +146,7 @@ def main():
 
     predict_ice_days(closed_form_weights, m, M)
 
-    interpret_weight(w)
-    interpret_model(w)
+
 
     predict_no_freeze_year(w, b, m, M)
 
